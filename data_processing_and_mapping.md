@@ -20,3 +20,28 @@ fastp -i ${NAME}_R1_001.fastq.gz -I ${NAME}_R2_001.fastq.gz -o $DATAOUTPUT/${NAM
 ```
 
 Re-run fastqc to confirm that fastp has improved the quality of the raw reads
+
+### Map to reference genome using BWA-MEM ###
+
+bwa-mem v. 0.7.17 sambamba v. 0.8.0
+
+
+Index genome
+```
+bwa index $GENOME
+```
+
+Map
+```
+bwa mem -t 15 -M $GENOME -R '@RG\tID:'${NAME}'\tSM:'${NAME}'\tPL:illumina\tLB:lib1\tPU:unit1' ${NAME}_paired_1.fastq.gz ${NAME}_paired_2.fastq.gz > $DATAOUTPUT/${NAME}.sam
+```
+
+Filter output files and convert to bam format using SAMBAMBA
+```
+sambamba view -t 15 -S -f bam ${NAME}.sam > ${NAME}.bam
+rm ${NAME}.sam
+sambamba view -f bam -F "proper_pair and not (unmapped or secondary_alignment) and not ([XA] != null or [SA] != null)" ${NAME}.bam > ${NAME}_paired_unique.bam
+rm ${NAME}.bam
+sambamba sort ${NAME}_paired_unique.bam
+rm ${NAME}_paired_unique.bam
+sambamba index -t 15 ${NAME}_paired_unique.sorted.bam
