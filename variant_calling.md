@@ -200,7 +200,7 @@ Automatically applied read filter: WellformedReadFilter
 Additional filters I applied:
 - heterozygosity 0.01  heterozygosity value used to compute prior probabilities for any locus, default: 0.001
 
-This step was run with ALL sites
+This step was run with ALL sites. This is computationally challenging and must be completed per chromosome, i.e.:
 
 ```
 gatk --java-options "-Djava.io.tmpdir=$SCRATCH $JAVA_OPTS" GenotypeGVCFs -R $GENOME -V gendb://$DATAINPUT -O $DATAOUTPUT/genotype_6.vcf.gz -L Chr6 --heterozygosity 0.01 -all-sites
