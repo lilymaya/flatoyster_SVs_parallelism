@@ -1,6 +1,6 @@
 # flatoyster_SVs_parallelism
 
-Code used for project **Parallel islands of differentiation at chromosomal inversions and other genomic regions in the European flat oyster (*Ostrea edulis*)** (Colston-Nepali, Doniol-Valcroze, Penaud, Reisser, Cornette, Roux, Fraïsse, Bierne [2]¶ and Lapègue, 2026)
+Code used for project **Parallel islands of differentiation at chromosomal inversions and other genomic regions in the European flat oyster (*Ostrea edulis*)** (Colston-Nepali, Doniol-Valcroze, Penaud, Reisser, Cornette, Roux, Fraïsse, Bierne, and Lapègue, 2026)
 
 ### How to follow ###
 First we process our raw data: [*data_processing_and_mapping.md*](https://github.com/lilymaya/flatoyster_SVs_parallelism/blob/main/data_processing_and_mapping.md)
