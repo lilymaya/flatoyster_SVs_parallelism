@@ -11,7 +11,7 @@ fastqc $DATAINPUT/${NAME}.fastq.gz -o $DATAOUTPUT 2> $LOG/fastqc_raw_${NAME}.log
 
 ### fastp ###
 
-use fastp (Chen et al. 2018, https://github.com/opengene/fastp) to assess quality to trim, filter for an average quality of 28, and removing polyG tails and Illumina adapter sequencing. 
+use fastp (https://github.com/opengene/fastp, Chen et al. 2018) to assess quality to trim, filter for an average quality of 28, and removing polyG tails and Illumina adapter sequencing. 
 fastp v. 0.20.0
 
 ```
@@ -23,7 +23,7 @@ Re-run fastqc to confirm that fastp has improved the quality of the raw reads
 
 ### Map to reference genome using BWA-MEM ###
 
-bwa-mem v. 0.7.17 sambamba v. 0.8.0
+Using bwa-mem v. 0.7.17 (Li and Durbin 2009) and sambamba v. 0.8.0 (Tarasov et al. 2015)
 
 
 Index genome
