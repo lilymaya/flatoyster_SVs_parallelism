@@ -8,7 +8,7 @@ See [https://pcingola.github.io/SnpEff/snpeff/introduction/](https://pixy.readth
 pixy calculates pairwise fst and dxy, and population level pi across the genome.
 First, input files with the populations of interest need to be generated.
 
-Use VCFtools v.0.1.16 to create input vcf files for populations (and regions) of interest, i.e. the inversion on chromsome 9.
+VCFtools v.0.1.16 was used to create input vcf files for populations (and regions) of interest, i.e. the inversion on chromsome 9.
 
 Here, we select only the individuals that are homozygous for an inversion allele. Each group (homozygous for allele 1, or homozygous for allele 2) will be an input 'population', outlined in a text file, i.e. chr9_inv.txt
 
