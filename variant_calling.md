@@ -128,8 +128,8 @@ Automatically applied read filters:
 - WellformedReadFilter- tests whether a read is "well-formed" -- that is, is free of major internal inconsistencies and issues that could lead to errors downstream.
   
 Additional filters I applied:
---min-base-quality-score 30  (minimum base quality required to consider a base for calling, default: 10)
---heterozygosity 0.01  (heterozygosity value used to compute prior probabilities for any locus, default: 0.001)
+- min-base-quality-score 30  (minimum base quality required to consider a base for calling, default: 10)
+- heterozygosity 0.01  (heterozygosity value used to compute prior probabilities for any locus, default: 0.001)
 
 ```
 #!/usr/bin/env bash
@@ -156,7 +156,7 @@ gatk --java-options "-Djava.io.tmpdir=$SCRATCH $JAVA_OPTS" HaplotypeCaller -R $G
 GenomicsDBImport: Import single-sample GVCFs into GenomicsDB before joint genotyping
 
 Automatically applied read filter:
-WellformedReadFilter- tests whether a read is "well-formed" -- that is, is free of major internal inconsistencies and issues that could lead to errors downstream. If a read passes this filter, the rest of the engine should be able to process it without blowing up.
+- WellformedReadFilter- tests whether a read is "well-formed" -- that is, is free of major internal inconsistencies and issues that could lead to errors downstream. If a read passes this filter, the rest of the engine should be able to process it without blowing up.
 
 ```
 #!/usr/bin/env bash
@@ -173,11 +173,10 @@ gatk --java-options "-Djava.io.tmpdir=$SCRATCH/gdb $JAVA_OPTS" GenomicsDBImport 
 
 GenotypeGVCFs: Perform joint genotyping on one or more samples pre-called with HaplotypeCaller
 
-Automatically applied read filter:
-WellformedReadFilter- tests whether a read is "well-formed" -- that is, is free of major internal inconsistencies and issues that could lead to errors downstream. If a read passes this filter, the rest of the engine should be able to process it without blowing up.
+Automatically applied read filter: WellformedReadFilter
 
 Additional filters I applied:
---heterozygosity 0.01  heterozygosity value used to compute prior probabilities for any locus, default: 0.001
+- heterozygosity 0.01  heterozygosity value used to compute prior probabilities for any locus, default: 0.001
 
 ```
 #!/usr/bin/env bash
@@ -219,7 +218,7 @@ First we want to separate the SNPs from the INDELS, using SelectVariants
 SelectVariants https://gatk.broadinstitute.org/hc/en-us/articles/360036362532-SelectVariants
 
 Automatically applied read filter:
-WellformedReadFilter- tests whether a read is "well-formed" -- that is, is free of major internal inconsistencies and issues that could lead to errors downstream. 
+- WellformedReadFilter
 
 ```
 #!/usr/bin/env bash
@@ -235,8 +234,7 @@ Hard filter using the recommended GATK parameters
 
 VariantFiltration https://gatk.broadinstitute.org/hc/en-us/articles/13832750065947-VariantFiltration
 
-Automatically applied read filter:
-WellformedReadFilter- tests whether a read is "well-formed" -- that is, is free of major internal inconsistencies and issues that could lead to errors downstream.
+Automatically applied read filter: WellformedReadFilter
 
 Additional filters I applied:
 
@@ -268,12 +266,11 @@ gatk VariantFiltration \
 
 Now we want to exclude these filtered sites using SelectVariants
 
-Automatically applied read filter:
-WellformedReadFilter- tests whether a read is "well-formed" -- that is, is free of major internal inconsistencies and issues that could lead to errors downstream. 
+Automatically applied read filter: WellformedReadFilter
 
 Additional filters:
---exclude-filtered		 	Don't include filtered sites (i.e. have anything other than `.` or `PASS` in the FILTER field).
---exclude-non-variants		Don't include non-variant sites (should already be only variant sites but just in case)
+- exclude-filtered		 	-don't include filtered sites (i.e. have anything other than `.` or `PASS` in the FILTER field).
+- exclude-non-variants		-don't include non-variant sites (should already be only variant sites but just in case)
 
 ```
 #!/usr/bin/env bash
