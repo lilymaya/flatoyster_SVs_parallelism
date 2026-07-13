@@ -13,7 +13,7 @@ Followed step 2, option 3 with my reference genome (Li et al. 2022)
 ```
 java -jar snpEff.jar build -gff3 -v Oed
 ```
-### Create VCFtools
+### Create input files with VCFtools
 Use VCFtools v.0.1.16 to create input vcf files for regions of interest, i.e. inversion on chromosome 9
 
 ```
