@@ -127,7 +127,7 @@ This step was run with VARIANT sites only:
 gatk --java-options "-Djava.io.tmpdir=$SCRATCH $JAVA_OPTS" GenotypeGVCFs -R $GENOME -V gendb://$DATAINPUT -O $DATAOUTPUT/genotype.vcf.gz --heterozygosity 0.01
 ```
 
-### Step 3: Filter variants ###
+### Step 4: Filter variants ###
 
 Useful articles:
 https://gatk.broadinstitute.org/hc/en-us/articles/360035531112#2
@@ -186,5 +186,29 @@ Additional filters:
 
 ```
 gatk SelectVariants -V $DATAINPUT --exclude-filtered --exclude-non-variants -O $DATAOUTPUT
+```
+
+## Invariant sites ##
+
+Some downstream analyses required invariant sites, so 'Step 3: Joint genotyping' from the 'Calling' section above was re-run to include these.
+
+### Step 3: Joint genotyping for INVARIANT ###
+GenotypeGVCFs: Perform joint genotyping on one or more samples pre-called with HaplotypeCaller
+
+Automatically applied read filter: WellformedReadFilter
+
+Additional filters I applied:
+- heterozygosity 0.01  heterozygosity value used to compute prior probabilities for any locus, default: 0.001
+
+This step was run with ALL sites
+
+```
+gatk --java-options "-Djava.io.tmpdir=$SCRATCH $JAVA_OPTS" GenotypeGVCFs -R $GENOME -V gendb://$DATAINPUT -O $DATAOUTPUT/genotype_6.vcf.gz -L Chr6 --heterozygosity 0.01 -all-sites
+```
+
+After this step, the 10 chromosomes must be consolidated into one VCF files:
+
+```
+picard GatherVcfs TMP_DIR=$SCRATCH I=vcf_list.list O=$DATAOUT
 ```
 
