@@ -114,8 +114,6 @@ gatk --java-options "-Djava.io.tmpdir=$SCRATCH/gdb $JAVA_OPTS" GenomicsDBImport 
 ```
 
 ### Step 3: Joint genotyping ###
-VARIANT SITES:
-
 GenotypeGVCFs: Perform joint genotyping on one or more samples pre-called with HaplotypeCaller
 
 Automatically applied read filter: WellformedReadFilter
@@ -123,11 +121,11 @@ Automatically applied read filter: WellformedReadFilter
 Additional filters I applied:
 - heterozygosity 0.01  heterozygosity value used to compute prior probabilities for any locus, default: 0.001
 
+This step was run first with VARIANT sites only:
+
 ```
 gatk --java-options "-Djava.io.tmpdir=$SCRATCH $JAVA_OPTS" GenotypeGVCFs -R $GENOME -V gendb://$DATAINPUT -O $DATAOUTPUT/genotype.vcf.gz --heterozygosity 0.01
 ```
-ALL SITES:
-
 GenotypeGVCFs was run a second time to include all samples, so that invariant sites could be used in several downstream analyses (ie. PIXY or demographic history). This is computationally challenging and must be completed per chromosome, i.e.:
 
 ```
@@ -135,7 +133,6 @@ gatk --java-options "-Djava.io.tmpdir=$SCRATCH $JAVA_OPTS" GenotypeGVCFs -R $GEN
 ```
 
 After this step, the 10 chromosomes must be consolidated into one VCF files:
-
 
 ```
 picard GatherVcfs TMP_DIR=$SCRATCH I=vcf_list.list O=$DATAOUT
