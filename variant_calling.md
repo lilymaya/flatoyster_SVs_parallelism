@@ -121,26 +121,13 @@ Automatically applied read filter: WellformedReadFilter
 Additional filters I applied:
 - heterozygosity 0.01  heterozygosity value used to compute prior probabilities for any locus, default: 0.001
 
-This step was run first with VARIANT sites only:
+This step was run with VARIANT sites only:
 
 ```
 gatk --java-options "-Djava.io.tmpdir=$SCRATCH $JAVA_OPTS" GenotypeGVCFs -R $GENOME -V gendb://$DATAINPUT -O $DATAOUTPUT/genotype.vcf.gz --heterozygosity 0.01
 ```
-GenotypeGVCFs was run a second time to include all samples, so that invariant sites could be used in several downstream analyses (ie. PIXY or demographic history). This is computationally challenging and must be completed per chromosome, i.e.:
-
-```
-gatk --java-options "-Djava.io.tmpdir=$SCRATCH $JAVA_OPTS" GenotypeGVCFs -R $GENOME -V gendb://$DATAINPUT -O $DATAOUTPUT/genotype_6.vcf.gz -L Chr6 --heterozygosity 0.01 -all-sites
-```
-
-After this step, the 10 chromosomes must be consolidated into one VCF files:
-
-```
-picard GatherVcfs TMP_DIR=$SCRATCH I=vcf_list.list O=$DATAOUT
-```
 
 ### Step 3: Filter variants ###
-
-Note that this step was completed on VARIANT sites, from the first GenotypeGVCFs step (not including invariant sites)
 
 Useful articles:
 https://gatk.broadinstitute.org/hc/en-us/articles/360035531112#2
