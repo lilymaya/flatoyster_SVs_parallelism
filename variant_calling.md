@@ -11,15 +11,6 @@ Following recommendations from: https://gatk.broadinstitute.org/hc/en-us/article
 Mark duplicates using Picard Tools v. 2.21.1
 
 ```
-#!/usr/bin/env bash
-#PBS -q sequentiel
-#PBS -l mem=30gb
-#PBS -l walltime=04:00:00
-#PBS -J 1-36
-#PBS -N Picard_MarkDup
-
-PICARD_TOOLS=". /appli/bioinfo/picard/2.21.1/env.sh"
-
 # Assign array nb to file
 NAME=$(cat $DATADIRECTORY/00_scripts/gatk_map.txt | awk "NR==${PBS_ARRAY_INDEX}")
 
@@ -35,15 +26,6 @@ picard MarkDuplicates TMP_DIR=$SCRATCH I=${NAME}_paired_unique.sorted.bam O=${NA
 Sort into coordinate order
 
   ```
-#!/usr/bin/env bash
-#PBS -q sequentiel
-#PBS -l mem=30gb
-#PBS -l walltime=04:00:00
-#PBS -J 1-36
-#PBS -N Picard_SortSam
-
-PICARD_TOOLS=". /appli/bioinfo/picard/2.21.1/env.sh"
-
 # Assign array nb to file
 NAME=$(cat $DATADIRECTORY/00_scripts/gatk_map.txt | awk "NR==${PBS_ARRAY_INDEX}")
 
@@ -59,13 +41,6 @@ picard SortSam TMP_DIR=$SCRATCH I=${NAME}_MD.bam O=${NAME}_SS.bam SORT_ORDER=coo
 Now index all the files
   
 ```
-#!/usr/bin/env bash
-#PBS -q sequentiel
-#PBS -l mem=30gb
-#PBS -l walltime=01:00:00
-#PBS -J 1-36
-#PBS -N samtools_findex
-
 # Assign array nb to file
 NAME=$(cat $DATADIRECTORY/00_scripts/gatk_map.txt | awk "NR==${PBS_ARRAY_INDEX}")
 
@@ -83,28 +58,12 @@ samtools index $DATAINPUT/${NAME}_SS.bam
 Create a sequence dictionary
   
 ```
-#!/usr/bin/env bash
-#PBS -q sequentiel
-#PBS -l mem=30gb
-#PBS -l walltime=01:00:00
-#PBS -N Picard_CreateSequenceDictionary
-
-. /appli/bioinfo/picard/2.21.1/env.sh
-
 picard CreateSequenceDictionary R=Oed.genome.chr.fasta O=Oed.genome.chr.dict
 ```
   
-Create a fasta index
+Create a fasta index using samtools v.1.9
 
 ```
-#!/usr/bin/env bash
-#PBS -q sequentiel
-#PBS -l mem=30gb
-#PBS -l walltime=01:00:00
-#PBS -N samtools_faidx
-
-. /appli/bioinfo/samtools/1.9/env.sh
-
 samtools faidx Oed.genome.chr.fasta
 ```
 
@@ -132,14 +91,6 @@ Additional filters I applied:
 - heterozygosity 0.01  (heterozygosity value used to compute prior probabilities for any locus, default: 0.001)
 
 ```
-#!/usr/bin/env bash
-#PBS -q omp
-#PBS -l mem=30gb
-#PBS -l ncpus=12
-#PBS -l walltime=480:00:00
-#PBS -J 1-36
-#PBS -N haplotype_caller
-
 # Assign array nb to file
 NAME=$(cat $DATADIRECTORY/00_scripts/gatk_map.txt | awk "NR==${PBS_ARRAY_INDEX}")
 
@@ -159,13 +110,6 @@ Automatically applied read filter:
 - WellformedReadFilter- tests whether a read is "well-formed" -- that is, is free of major internal inconsistencies and issues that could lead to errors downstream. If a read passes this filter, the rest of the engine should be able to process it without blowing up.
 
 ```
-#!/usr/bin/env bash
-#PBS -q omp
-#PBS -l mem=30gb
-#PBS -l ncpus=15
-#PBS -l walltime=300:00:00
-#PBS -N genomicsDB_import_all
-
 gatk --java-options "-Djava.io.tmpdir=$SCRATCH/gdb $JAVA_OPTS" GenomicsDBImport --genomicsdb-workspace-path $DATAOUTPUT --sample-name-map $SAMPLES -L $INTERVALS
 ```
 
@@ -179,25 +123,11 @@ Additional filters I applied:
 - heterozygosity 0.01  heterozygosity value used to compute prior probabilities for any locus, default: 0.001
 
 ```
-#!/usr/bin/env bash
-#PBS -q omp
-#PBS -l mem=30gb
-#PBS -l ncpus=15
-#PBS -l walltime=50:00:00
-#PBS -N genotype_gcvfs
-
 gatk --java-options "-Djava.io.tmpdir=$SCRATCH $JAVA_OPTS" GenotypeGVCFs -R $GENOME -V gendb://$DATAINPUT -O $DATAOUTPUT/genotype.vcf.gz --heterozygosity 0.01
 ```
 GenotypeGVCFs was run a second time to include all samples, so that invariant sites could be used in several downstream analyses (ie. PIXY or demographic history). This is computationally challenging and must be completed per chromosome, i.e.:
 
 ```
-#!/usr/bin/env bash
-#PBS -q sequentiel
-#PBS -l mem=500gb
-#PBS -l ncpus=1
-#PBS -l walltime=24:00:00
-#PBS -N genotype_gcvfs_6
-
 gatk --java-options "-Djava.io.tmpdir=$SCRATCH $JAVA_OPTS" GenotypeGVCFs -R $GENOME -V gendb://$DATAINPUT -O $DATAOUTPUT/genotype_6.vcf.gz -L Chr6 --heterozygosity 0.01 -all-sites
 ```
 
@@ -221,12 +151,6 @@ Automatically applied read filter:
 - WellformedReadFilter
 
 ```
-#!/usr/bin/env bash
-#PBS -q sequentiel
-#PBS -l mem=50gb
-#PBS -l walltime=00:30:00
-#PBS -N select_snps
-
 gatk SelectVariants -V $DATAINPUT -select-type SNP -O $DATAOUTPUT
 ```
 
@@ -246,12 +170,6 @@ MQRankSum : Mapping QualityRankSumTest, this is the u-based z-approximation from
 ReadPosRankSum : ReadPosRankSumTest, this is the u-based z-approximation from the Rank Sum Test for site position within reads
 
 ```
-#!/usr/bin/env bash
-#PBS -q sequentiel
-#PBS -l mem=50gb
-#PBS -l walltime=01:00:00
-#PBS -N filter_snps
-
 gatk VariantFiltration \
     -V $DATAINPUT \
     -filter "QD < 2.0" --filter-name "QD2" \
@@ -273,12 +191,6 @@ Additional filters:
 - exclude-non-variants		-don't include non-variant sites (should already be only variant sites but just in case)
 
 ```
-#!/usr/bin/env bash
-#PBS -q sequentiel
-#PBS -l mem=50gb
-#PBS -l walltime=05:00:00
-#PBS -N exclude_filtered_snps
-
 gatk SelectVariants -V $DATAINPUT --exclude-filtered --exclude-non-variants -O $DATAOUTPUT
 ```
 
