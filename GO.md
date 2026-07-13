@@ -1,4 +1,4 @@
-# SnpEff
+# Gene ontology enrichment analyses
 
 SnpEff v. 5.0
 
@@ -13,8 +13,14 @@ Followed step 2, option 3 with my reference genome (Li et al. 2022)
 ```
 java -jar snpEff.jar build -gff3 -v Oed
 ```
-### Then run the annotation on each file, i.e. inversion region on chromosome 9
-Use VCFtools v.0.1.16 to create input vcf files for regions of interest.
+### Create VCFtools
+Use VCFtools v.0.1.16 to create input vcf files for regions of interest, i.e. inversion on chromosome 9
+
+```
+vcftools --vcf genomescan1.recode.vcf --positions inversion9_snps.txt --recode --recode-INFO-all --out inversion9
+```
+
+### Then run the annotation on each file
 
 ```
 java -Xmx8g -jar snpEff.jar -v Oed inversion9.recode.vcf > inversion9.ann.vcf
