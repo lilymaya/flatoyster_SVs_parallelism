@@ -1,6 +1,6 @@
 # Gene ontology enrichment analyses
 
-SnpEff v. 5.0
+SnpEff v. 5.0 (Cingolani et al. 2012)
 
 See https://pcingola.github.io/SnpEff/snpeff/introduction/ for more information
 
