@@ -115,7 +115,7 @@ Run vcf2fasta (modified) for each chromosome, e.g.
 vcf2_fasta_cfraisse_modified.py --fasta $GENOME --vcf $VCF --gff $GFF --feat gene --out $OUTPUT
 ```
 
-Then modify the fasta files for input for DILS, using modify_fasta.py, created by Camille RouxL.
+Then modify the fasta files for input for DILS, using modify_fasta.py, created by Camille Roux.
 ```
 for fastafile in $(ls output_chr1_gene/*.fas); do gene_name=$(basename $fastafile); python3 modify_fasta.py ${fastafile} /home1/datawork/lcolston/flatoyster/demography_final/correspondance_pop_table.txt relabelledFastaFiles1/${gene_name} >> nStopCodons1.txt; done
 ```
