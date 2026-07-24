@@ -112,12 +112,12 @@ We needed to modify the vcf2fasta command for DILS input: see vcf2_fasta_cfraiss
 
 Run vcf2fasta (modified) for each chromosome, e.g.
 ```
-/home1/datawork/lcolston/flatoyster/demography_final/vcf2fasta/vcf2_fasta_cfraisse_modified.py --fasta $GENOME --vcf $VCF --gff $GFF --feat gene --out $OUTPUT
+vcf2_fasta_cfraisse_modified.py --fasta $GENOME --vcf $VCF --gff $GFF --feat gene --out $OUTPUT
 ```
 
 Then modify the fasta files for input for DILS, using modify_fasta.py, created by Camille RouxL.
 ```
-for fastafile in $(ls /home1/datawork/lcolston/flatoyster/demography_final/output_chr1_gene/*.fas); do gene_name=$(basename $fastafile); python3 /home1/datawork/lcolston/flatoyster/demography_final/modify_fasta.py ${fastafile} /home1/datawork/lcolston/flatoyster/demography_final/correspondance_pop_table.txt /home1/datawork/lcolston/flatoyster/demography_final/relabelledFastaFiles1/${gene_name} >> /home1/datawork/lcolston/flatoyster/demography_final/nStopCodons1.txt; done
+for fastafile in $(ls output_chr1_gene/*.fas); do gene_name=$(basename $fastafile); python3 modify_fasta.py ${fastafile} /home1/datawork/lcolston/flatoyster/demography_final/correspondance_pop_table.txt relabelledFastaFiles1/${gene_name} >> nStopCodons1.txt; done
 ```
 
 ### EDIT GENES INCLUDED ###
