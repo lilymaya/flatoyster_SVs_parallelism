@@ -1,4 +1,4 @@
-# Genomescan1
+# genomescan1
 
 This dataset contains only variant sites. This dataset was used as input for the local PCA (localpca.R), the gene ontology/annotation (GO.md), and the parallel signals analyses (parallel_signals.md).
 
