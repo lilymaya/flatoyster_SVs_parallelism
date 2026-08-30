@@ -17,4 +17,6 @@ We calculate pi, fst and dxy across the genome: [*pi-fst-dxy.md*](https://github
 
 We scan for parallel signals across the genome using: [*parallel_signals.md*](https://github.com/lilymaya/flatoyster_SVs_parallelism/blob/main/parallel_signals.md) and [*parallel_signals.R*](https://github.com/lilymaya/flatoyster_SVs_parallelism/blob/main/parallel_signals.R)
 
+We use SnpEff to annotate vcfs, and examine GO enrichment: [*snpeff.md*](https://github.com/lilymaya/flatoyster_SVs_parallelism/blob/main/snpeff.md)
+
 We assemble and annotate mitogenomes: [*mitogenome.md*](https://github.com/lilymaya/flatoyster_SVs_parallelism/blob/main/mitogenome.md)
